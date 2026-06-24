@@ -1,0 +1,7 @@
+mcs.metadata:
+  componentName: LieuConvocation, TypeCourrier, GE
+  description: "Cette source de connaissance répond aux questions trouvées dans les éléments Dataverse suivants : LieuConvocation, TypeCourrier, GE"
+kind: KnowledgeSourceConfiguration
+source:
+  kind: DataverseStructuredSearchSource
+  skillConfiguration: LieuConvocation_TypeCourrierGE_p7QSrB3ZHyMAjtvG2CxqZ

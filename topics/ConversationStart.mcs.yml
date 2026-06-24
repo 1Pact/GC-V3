@@ -1,0 +1,106 @@
+mcs.metadata:
+  componentName: Début de la conversation
+  description: Collecte les informations initiales (GE, salarié, date, rédacteur, type de courrier) via des questions interactives avant de lancer la génération.
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnConversationStart
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendWelcome_001
+      activity: Bonjour ! Je suis votre assistant RH pour la génération de courriers disciplinaires. Je vais vous poser quelques questions pour préparer le document.
+
+    - kind: SetVariable
+      id: initListeGE
+      variable: init:Topic.ListeGE
+      value: "=[{DisplayName: \"1PACT FRANCE\"},{DisplayName: \"GE Aquitaine\"},{DisplayName: \"GE Auvergne\"},{DisplayName: \"GE Dauphine Savoie\"},{DisplayName: \"GE Francilienne Sud\"},{DisplayName: \"GE GEBARA\"},{DisplayName: \"GE Grand Est\"},{DisplayName: \"GE Grand Ouest\"},{DisplayName: \"GE Handicap et Diversite\"},{DisplayName: \"GE Hauts de France\"},{DisplayName: \"GE IDF\"},{DisplayName: \"GE La Reunion\"},{DisplayName: \"GE Nord\"},{DisplayName: \"GE Occitanie\"},{DisplayName: \"GE Paris Nord\"},{DisplayName: \"GE Paris Sud\"},{DisplayName: \"GE PEL\"},{DisplayName: \"GE Rhone Alpes\"},{DisplayName: \"GE Seine et Marne\"},{DisplayName: \"GE Sud Ouest\"},{DisplayName: \"GE Val de Loire\"},{DisplayName: \"GEIQ Avenir Handicap\"},{DisplayName: \"GEIQ BTP 37\"},{DisplayName: \"GEIQ IMPACT\"},{DisplayName: \"GEIQ Industrie 28\"},{DisplayName: \"GEIQ TL PACA\"},{DisplayName: \"GEIQ TL VDL\"}]"
+
+    - kind: SetVariable
+      id: initListeTypesCourrier
+      variable: init:Topic.ListeTypesCourrier
+      value: "=[{DisplayName: \"Avertissement pour absence injustifiée\"},{DisplayName: \"Avertissement pour retard\"},{DisplayName: \"Mise en demeure de justifier absence\"},{DisplayName: \"Attestation employeur\"},{DisplayName: \"Convocation à entretien préalable au licenciement\"},{DisplayName: \"Convocation à entretien préalable au licenciement avec mise à pied à titre conservatoire\"},{DisplayName: \"Convocation à entretien en vue d'une rupture conventionnelle\"}]"
+
+    - kind: Question
+      id: question_GE
+      alwaysPrompt: false
+      variable: init:Topic.GESelectionne
+      prompt: Pour quel groupement d'employeurs souhaitez-vous générer ce courrier ?
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Topic.ListeGE
+
+    - kind: Question
+      id: question_NomSalarie
+      alwaysPrompt: false
+      variable: init:Topic.NomSalarie
+      prompt: "Nom et prénom du salarié concerné :"
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: question_DateRedaction
+      alwaysPrompt: false
+      variable: init:Topic.DateRedaction
+      prompt: "Date de rédaction du courrier (format JJ/MM/AAAA) :"
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: question_NomRedacteur
+      alwaysPrompt: false
+      variable: init:Topic.NomRedacteur
+      prompt: "Votre nom et prénom (rédacteur du courrier) :"
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: question_EmailRedacteur
+      alwaysPrompt: false
+      variable: init:Topic.EmailRedacteur
+      prompt: "Votre adresse email (le courrier vous sera envoyé à cette adresse) :"
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: question_TypeCourrier
+      alwaysPrompt: false
+      variable: init:Topic.TypeCourrier
+      prompt: "Quel type de courrier souhaitez-vous générer ?"
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Topic.ListeTypesCourrier
+
+    - kind: SendActivity
+      id: sendRecap_001
+      activity: |-
+        Parfait. Voici un récapitulatif avant de continuer :
+
+        - **Groupement d'employeurs** : {Topic.GESelectionne}
+        - **Salarié** : {Topic.NomSalarie}
+        - **Date du courrier** : {Topic.DateRedaction}
+        - **Rédacteur** : {Topic.NomRedacteur} ({Topic.EmailRedacteur})
+        - **Type de courrier** : {Topic.TypeCourrier}
+
+        Je génère votre courrier…
+
+    - kind: InvokeFlowAction
+      id: callFlow_GenererCourrier
+      flowId: a7d592e9-c007-41bc-a99d-a1495633620f
+      input:
+        parameters:
+          var_GE: =Topic.GESelectionne
+          var_TypeObjet: =Topic.TypeCourrier
+          var_EmailRedacteur: =Topic.EmailRedacteur
+          var_NomChaff: =Topic.NomSalarie
+          var_Civilite: ""
+          var_IdentiteSalarie: =Topic.NomSalarie
+          var_VilleGE: ""
+          var_CorpsIA: ""
+          var_AdresseGE: ""
+          var_CPVilleGE: ""
+          var_AdresseSalarie: ""
+          var_CPSalarie: ""
+          var_VilleSalarie: ""
+      output:
+        parameters:
+          Statut: init:Topic.StatutGeneration
+
+    - kind: SendActivity
+      id: sendConfirmation_001
+      activity: Votre courrier a été généré et envoyé à {Topic.EmailRedacteur}.

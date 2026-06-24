@@ -1,0 +1,10 @@
+mcs.metadata:
+  componentName: Procédure GRH V1-10.04.25.pptx
+  description: Cette source de connaissances est la référence juridique principale à appliquer pour déterminer les délais, dates de convocation et autres sujets du droit du travail
+kind: KnowledgeSourceConfiguration
+source:
+  kind: FederatedStructuredSearchSource
+  connectionProperties:
+    mode: Invoker
+
+  skillConfiguration: ProcdureGRHV1100425pptx_880o3N97bvWsO9If_85S7

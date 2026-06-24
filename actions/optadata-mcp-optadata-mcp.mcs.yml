@@ -1,0 +1,14 @@
+mcs.metadata:
+  componentName: optadata-mcp - optadata-mcp
+kind: TaskDialog
+modelDisplayName: optadata-mcp
+modelDescription: Serveur MCP qui interroge les données Optalink hébergées sur Supabase
+action:
+  kind: InvokeExternalAgentTaskAction
+  connectionReference: cr39b_GCV3.shared_new-5foptadata-2dmcp-5f03dd8cbd35dde2e8.a050891e92fd41e388c5641190e9df40
+  connectionProperties:
+    mode: Invoker
+
+  operationDetails:
+    kind: ModelContextProtocolMetadata
+    operationId: InvokeServer

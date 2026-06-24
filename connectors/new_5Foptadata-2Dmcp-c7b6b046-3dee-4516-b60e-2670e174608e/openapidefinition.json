@@ -1,0 +1,40 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "optadata-mcp",
+    "description": "Serveur MCP qui interroge les donn\u00E9es Optalink h\u00E9berg\u00E9es sur Supabase",
+    "version": "1.0.0"
+  },
+  "host": "optadata-mcp-dpa4e9d4ejhwchab.francecentral-01.azurewebsites.net",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/mcp": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Immediate Response"
+          }
+        },
+        "x-ms-agentic-protocol": "mcp-streamable-1.0",
+        "operationId": "InvokeServer",
+        "summary": "optadata-mcp",
+        "description": "Serveur MCP qui interroge les donn\u00E9es Optalink h\u00E9berg\u00E9es sur Supabase"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    }
+  ]
+}
